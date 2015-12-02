@@ -23,5 +23,28 @@ stock CreateDynamicPrisma(modelid, Float:cx, Float:cy, Float:cz, Float:length, F
 			CreateDynamicObject(modelid, sx + x, sy + y, sz + z, 0.0, 0.0, 0.0);
 		}
 	}
-    return 1;
+    	return 1;
+}
+stock CreateDynamicRectangle(modelid, Float:cx, Float:cy, Float:cz, Float:length, Float:width, lsegs, wsegs, bool:fill)
+{	
+	if(length == 1.0 || width == 1.0 || lsegs == 1 || wsegs == 1) return 0;
+	length -= 1.0, width -= 1.0, lsegs -=1, wsegs -=1;
+	new
+		Float:sx = cx - (length / 2.0),
+		Float:sy = cy - (width / 2.0),
+		Float:ex = cx + (length / 2.0),
+		Float:ey = cy + (width / 2.0),
+		Float:dx = (ex - sx),
+		Float:dy = (ey - sy),
+		Float:lstep = dx / lsegs,
+		Float:wstep = dy / wsegs
+	;
+	for(new Float:x, Float:mx = lsegs * lstep; x <= mx; x += lstep)  for(new Float:y, Float:my = wsegs * wstep; y <= my; y += wstep)
+	{
+		if(fill || (x == 0.0 || y == 0.0 || x == mx || y == my)) 
+		{
+			CreateDynamicObject(modelid, sx + x, sy + y, cz, 0.0, 0.0, 0.0);
+		}	
+	}
+    	return 1;
 }
